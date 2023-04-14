@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link th:href="@{/css/fontawesome/css/all.css}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+	<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/discgolf/round.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/discgolf/discGolfNavbar.css}">
+	<title>Add Score</title>
+
+</head>
+<body>
+<div th:replace="fragments/navbars/libraryNavbar :: navbar"></div>
+	<div class="container">
+		<div class="subContainer">
+			<h1>Add Score</h1>
+			<div id="username">
+				<b>Username:</b> <span sec:authentication="principal.username"></span>
+			</div>
+		</div>
+		<hr>
+		<div id="alert" class="alert alert-warning alert-dismissible date show" role="alert" th:text="${failed}" th:if="${failed}"></div>
+		<div class="row">
+			<div class="col-sm-12">
+				<a th:href = "@{/discgolf}">Home</a>
+				<form action="#" th:action="@{/discgolf/saveRoundForUser/{id}(id=${userId})}" th:object="${round}"
+					  method="POST">
+					<div class="form-group">
+						<input type="date" th:field="${newRound.roundDate}"
+							   placeholder="Round Date" class="form-control mb-4 col-4">
+							<div class="form-group blu-margin">
+
+							</div>
+					<button type="submit" class="btn btn-info col-2">Select Course</button>
+					</div>
+				</form>
+			</div>
+<!--			<div class="col-sm-6">-->
+<!--				<h4>How to add a player</h4>-->
+<!--				<p>-->
+<!--					Add player name and start and end dates, then when assigning an employee to a project, tick the-->
+<!--					project box and add the dates this employee will work on this project. You can add multiple projects-->
+<!--					to one employee.-->
+<!--				</p>-->
+<!--				<p>-->
+<!--					Click Save Employee once all information is added and projects are selected.-->
+<!--				</p>-->
+<!--			</div>-->
+		</div>
+		<hr>
+		<a th:href = "@{/discgolf/rounds}">Back to Round List</a>
+		<hr>
+	</div>
+	<script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
+	<script th:src="@{/js/discgolf/course.js}"></script>
+</body>
+</html>

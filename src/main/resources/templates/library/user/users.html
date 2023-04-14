@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="/css/fontawesome/css/all.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/css/library/users.css" >
+<title>Library App Users</title>
+
+</head>
+<body>
+	<div th:replace="fragments/navbars/libraryNavbar :: navbar"></div>
+
+<br>
+<br>
+<div class="container-fluid">
+    <div class="row justify-content-md-center">
+    <div class="col-md-11" id="username">
+		<b>My Username:</b> <span sec:authentication="principal.username"></span> <!-- needed to add dependency thymeleaf-extras springsecurity5 -->
+	</div>
+        <div class="col-md-11">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col col-sm-3 col-xs-12">
+                            <h4 class="title">User <span>List</span></h4>
+                        </div>
+	                    </div>
+	                    	<div class="col-sm-9 col-xs-12 text-left">
+	                    </div>
+	                </div>
+	                <div class="panel-body table-responsive">
+	                    <table class="table">
+	                        <thead>
+	                            <tr>
+	                                <th>
+										<span class="full-text">User Id</span>
+										<span class="short-text">Id</span>
+<!--										<a th:href="@{'/library/users/page/' + ${currentPage} + '/id?sortDir=' + ${reverseSortDir}}">UserId</a>-->
+	                                </th>
+									<th>Image
+									</th>
+									<th>Role</th>
+									<th>
+										<span class="full-text">First Name</span>
+										<span class="short-text">First</span>
+									</th>
+									<th>
+										<span class="full-text">Last Name</span>
+										<span class="short-text">Last</span>
+									</th>
+									<th>
+										Email
+<!--										<a th:href="@{'/library/users/page/' + ${currentPage} + '/email?sortDir=' + ${reverseSortDir}}">Email</a>-->
+									</th>
+									<th id="actionsTitle">Actions</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                            <tr th:each="user : ${listOfUsers}">
+									<td th:text="${user.id}"></td>
+									<td><img th:src="@{${user.userImagePath}}" src="#"></td>
+									<td th:text="${user.roles}"></td> <!-- in the user class, we have the roles (Set) collection -->
+									<td th:text="${user.firstName}"></td>
+									<td th:text="${user.lastName}"></td>
+									<td th:text="${user.email}"></td>
+									<td>
+										<a th:href="@{/library/updateUser/{id}(id=${user.id})}" class="btn">
+											<i id="updateIcon" class="fa fa-pencil-square-o" title="Edit User"></i>
+										</a>
+										<a th:href="@{/library/deleteUser/{id}(id=${user.id})}" class="btn">
+											<i id="deleteIcon" class="fa-solid fa-trash-can" title="Delete User"></i>
+										</a>
+									</td>
+								</tr>
+	                        </tbody>
+	                    </table>
+						<footer class="panel-footer">
+							<nav aria-label="Pagination">
+								<div class="container">
+									<div class="row">
+										<div id="totalItems" class="col-sm">
+											Total Items: [[${totalItems}]] : Page [[${currentPage}]] of [[${totalPages}]]
+										</div>
+										<div id="paginationButtons" class="col-sm-7">
+											<ul class="pagination">
+												<li class="page-item">
+													<!-- if the current page is greater than 1 so 2, 3, 4 etc -->
+													<a class="page-link" th:if="${currentPage > 1}" th:href="@{/library/users/page/1}" title="First Page">First</a>
+													<!-- unless do this -->
+													<span class="page-link" th:unless="${currentPage > 1}">First</span>
+												</li>
+												<li class="page-item">
+													<a class="page-link" th:if="${currentPage > 1}" th:href="@{'/library/users/page/' + ${currentPage - 1}}" title="Previous Page"><i class="fa-solid fa-angles-left"></i></i></a>
+													<span class="page-link" th:unless="${currentPage > 1}"><i class="fa-solid fa-angles-left" title="Previous Page"></i></span>
+												</li>
+												<li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
+														<a class="page-link" th:href="@{'/library/users/page/' + ${i}}">[[${i}]]</a>
+												</li>
+												<li class="page-item">
+													<a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/library/users/page/' + ${currentPage + 1}}" title="Next Page"><i class="fa-solid fa-angles-right"></i></a>
+													<span class="page-link" th:unless="${currentPage < totalPages}"><i class="fa-solid fa-angles-right" title="Next Page"></i></span>
+												</li>
+												<li class="page-item">
+													<a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/library/users/page/' + ${totalPages}}" title="Last Page">Last</a>
+													<span class="page-link" th:unless="${currentPage < totalPages}" title="Last Page">Last</span>
+												</li>
+
+											</ul>
+										</div>
+
+									</div>
+								</div>
+							</nav>
+						</footer>
+	                </div>
+<!--					<div th:if = "${totalPages > 1}">-->
+<!--						<div class="row col-sm-10">-->
+<!--							<div class="col-sm-2">-->
+<!--								Total rows: [[${totalUsers}]]-->
+<!--							</div>-->
+<!--							<div class="col-sm-1">-->
+<!--											&lt;!&ndash; below number sequence 1, 2, 3, 4, i = the total number of pages, eg 10 users (5 each page) i = 2 (pages)&ndash;&gt;-->
+<!--								<span th:each = "i: ${#numbers.sequence(1, totalPages)}">-->
+<!--									&lt;!&ndash; current page is 1, but if current page is 2 then it continues the rest of the line  &ndash;&gt;-->
+<!--									<a th:if="${currentPage != i}" th:href="@{'/library/users/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>-->
+<!--									<span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;-->
+<!--								</span>-->
+<!--							</div>-->
+<!--							<div class="col-sm-1">-->
+<!--								&lt;!&ndash; if currentPage < totalPages we can show a href, unless (below) we just show text &ndash;&gt;-->
+<!--								<a th:if="${currentPage < totalPages}" th:href="@{'/library/users/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>-->
+<!--								<span th:unless="${currentPage < totalPages}">Next</span>-->
+<!--							</div>-->
+<!--							<div class="col-sm-1">-->
+<!--								<a th:if="${currentPage < totalPages}" th:href="@{'/library/users/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>-->
+<!--								<span th:unless="${currentPage < totalPages}">Last</span>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/customUser.js"></script>
+</body>
+</html>

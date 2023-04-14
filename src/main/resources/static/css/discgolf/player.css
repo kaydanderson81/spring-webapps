@@ -1,0 +1,75 @@
+table {
+    font-size: 12px;
+    text-align: center;
+}
+
+.border div {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+
+#addProjectHeader {
+    height: 50px;
+    line-height: 20px;
+    text-align: center;
+}
+
+#addProjectHeader {
+    font-size: 9px;
+    text-align: center;
+    margin-top: 8px;
+}
+
+#addProject {
+    color: #3bb923;
+}
+
+#playerRoundInfo td p {
+    font-size: 8.5px;
+}
+
+#playerRoundInfo {
+    font-size: 10px;
+}
+
+#deleteEmplProj {
+    color: #fe635f;
+    font-size: 17px;
+}
+
+#updateEmplProj {
+    color: #007bff;
+    font-size: 17px;
+}
+
+#editRemoveProject {
+    font-size: 9px;
+    text-align: center;
+    margin-top: 8px;
+}
+
+/*tooltip*/
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

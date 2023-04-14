@@ -1,0 +1,160 @@
+
+#container {
+ width:100%;
+ text-align:center;
+}
+#container > div {
+ width: calc(100% / 6);
+ display: inline-block;
+ vertical-align: top;
+ border:1px solid red;
+ text-align:center;
+ margin:2%;
+ padding:20px;
+}
+
+table {
+    font-size: 12px;
+    text-align: center;
+}
+
+#parRow div {
+    padding-bottom: 30px;
+}
+
+#parRow div label{
+    max-width: 70px;
+}
+
+#parRow div input{
+    max-width: 70px;
+}
+
+.border div {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+
+#addProjectHeader {
+    height: 50px;
+    line-height: 20px;
+    text-align: center;
+}
+
+#addProjectHeader {
+    font-size: 9px;
+    text-align: center;
+    margin-top: 8px;
+}
+
+#addProject {
+    color: #3bb923;
+}
+
+#playerRoundInfo td p {
+    font-size: 8.5px;
+}
+
+#playerRoundInfo {
+    font-size: 10px;
+}
+
+#deleteEmplProj {
+    color: #fe635f;
+    font-size: 17px;
+}
+
+#updateEmplProj {
+    color: #007bff;
+    font-size: 17px;
+}
+
+#editRemoveProject {
+    font-size: 9px;
+    text-align: center;
+    margin-top: 8px;
+}
+
+/*tooltip*/
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+#rounds {
+
+    display: inline-block;
+    padding: 6px;
+    margin: 10px;
+    border: 1px solid #ced4db;
+    border-radius: 0.25rem;
+}
+
+.d-flex flex-row {
+    max-height: 50px;
+}
+
+.panel .row {
+    padding-top: 20px;
+}
+
+/*score bar*/
+.container-fluid canvas{
+   height:50px
+
+}
+
+/*accordion*/
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+/*score color*/
+/*td.Ace {
+    background: #66C698;
+}
+
+td.Birdie {
+    background: #77ACD8;
+}*/

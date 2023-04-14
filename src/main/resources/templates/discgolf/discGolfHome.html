@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+<link rel="stylesheet" th:href="@{https://use.fontawesome.com/releases/v5.3.1/css/all.css}"
+	  integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" th:href="@{/css/discgolf/discGolfHome.css}">
+<title>Library App Home</title>
+
+</head>
+<body>
+	<div th:replace="fragments/navbars/libraryNavbar :: navbar"></div>
+
+<br>
+<br>
+<div class="container">
+	<div class="subContainer">
+		<h1>Disc Golf Application</h1>
+		<div id="username">
+			<b>Username:</b> <span sec:authentication="principal.username"></span>
+		</div>
+	</div>
+	<div class="subContainer">
+		<div id="squareButtons" class="wrap">
+			<a class="btn" href="#" th:href="@{/discgolf/courses}">Courses</a>
+			<a class="btn" href="#" th:href="@{/discgolf/rounds/{id}(id=${userId})}">Rounds</a>
+			<a class="btn" href="#" th:href="@{/library/users}">Users</a>
+			<a class="btn" href="#" th:href="@{/logout}">Logout</a>
+		</div>
+	</div>
+
+	<div class="subContainer">
+		<div class="row">
+			<div id="squareProfile" class="row">
+				<div th:each="user : ${users}">
+					<p>
+						<label>Name:</label>
+						<label th:text="${user.name}"></label>
+					</p>
+					<p>
+						<label>Rounds Played: </label>
+						<label th:text="${user.roundsPlayed}"></label>
+					</p>
+					<p>
+						<label>Holes played: </label>
+						<label th:text="${user.holes}"></label>
+					</p>
+					<p>
+						<label>Player Average per hole: </label>
+						<label th:text="${#numbers.formatDecimal(user.playerAverage, 0, 2)}"></label>
+					</p>
+					<p>
+						<label>Aces: </label>
+						<label th:text="${user.aces}"></label>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript" th:src="@{/js/jquery-3.6.0.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap/bootstrap.min.js}"></script>
+</body>
+</html>

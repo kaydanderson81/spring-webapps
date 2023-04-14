@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="/css/library/users.css" >
+<title>Update User</title>
+
+</head>
+<body>
+	<div th:replace="fragments/navbars/libraryNavbar :: navbar"></div>
+<br>
+<br>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div th:if="${param.success}"> <!-- comes from UserRegistrationController method registerUserAccount -->
+					<div class="alert alert-info">You've successfully updated!</div>
+				</div>			
+				<h1>Update User</h1>
+				<!-- once user makes the registration, the request (and the user object) goes to the controller to the @PostMapping method -->
+				<form th:action="@{/library/saveUser}" method="post" th:object="${user}" enctype="multipart/form-data"><!-- object: is from the controller -->
+					<!-- Add hidden form field to handle update -->
+					<input type="hidden" th:field="*{id}"/>
+					<div class="form-group">
+						<input type="file" name="mainImage" id="mainImage" accept="image/png, image/jpeg"/>
+						<div class="image-preview" id="imagePreview">
+							<img src="" alt="Image Preview" class="image-preview__image"/>
+							<span class="image-preview__default-text">Main Image</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="firstname">
+							First Name
+						</label>
+						<input id="firstName" class="form-control" th:field="*{firstName}" required autofocus="autofocus"/> <!-- refers to the firstName in the UserRegistrationDto-->
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="lastname">
+							Last Name
+						</label>
+						<input id="lastName" class="form-control" th:field="*{lastName}" required autofocus="autofocus"/>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="email">
+							Email
+						</label>
+						<input id="email" class="form-control" th:field="*{email}" required autofocus="autofocus"/>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="password">
+							Password
+						</label>
+						<input id="password" class="form-control" type="password" th:field="*{password}" required autofocus="autofocus"/>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="assignedRoles">
+							Assigned Roles
+						</label>
+						<th:block th:each="role : ${listRoles}"> <!-- in the UserController -->
+							<!-- (below) in the User entity class -->
+							<input type="checkbox" th:field="*{roles}" 
+								th:value="${role.id}"  
+								th:text="${role.name}" class="m-2">	<!-- can set the value and the text with thymeleaf -->
+						</th:block>
+					</div>
+					
+					<div class="form-group">
+						<button type="submit" class="btn btn-success">Update User</button>
+					</div>
+				</form> 
+			</div>
+		</div>
+	</div>
+<script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/customUser.js"></script>	
+</body>
+</html>

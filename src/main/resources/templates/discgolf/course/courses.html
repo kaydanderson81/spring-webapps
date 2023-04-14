@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link th:href="@{/css/fontawesome/css/all.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/discgolf/course.css}">
+
+    <title>Courses</title>
+
+</head>
+<body>
+<div th:replace="fragments/navbars/libraryNavbar :: navbar"></div>
+<div class="container">
+    <h1>Course List</h1>
+    <div class="row">
+        <a class="col-sm-4" th:href="@{/discgolf}">Disc Golf Home</a>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <a th:href = "@{/discgolf/newCourseForm}" class="btn btn-primary btn-sm mb-3">Add Course</a>
+        </div>
+    </div>
+    <div class="container" th:each="course : ${courses}">
+        <div>
+            <div id="courseDetails" class="row">
+                <div class="col-sm-3">
+                    <p><strong>Course Name:</strong>
+                        <a th:text="${course.name}"></a>
+                    </p>
+                </div>
+                <div class="col-sm-3">
+                    <p><strong>Course Par:</strong>
+                        <a th:text="${course.par}"></a>
+                    </p>
+                </div>
+                <div class="col-sm-3">
+                    <p><strong>Course Record:</strong>
+                        <a th:text="${course.record}"></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div >
+            <table id="courseInfo" class="table table-bordered w-auto">
+                <tr>
+                    <th th:text="${'Hole'}"></th>
+                    <th th:each="par : ${course.holes}">[[${par.number}]]</th>
+                    <th>Actions</th>
+                </tr>
+
+                <tr>
+                    <td th:text="${'Par'}"></td>
+                    <td th:each="par : ${course.holes}">[[${par.par}]]</td>
+                    <td>
+                        <a th:href="@{/discgolf/showUpdateCourseForm/{id}(id=${course.id})}"
+                           class="table-link primary" title="Update Course">
+                        <span id="updateCourse" class="fa-stack">
+                            <i class="fa fa-square fa-stack-2x"></i>
+                            <i class="fa fa-search-plus fa-stack-1x fa-inverse" title="Update Course"></i>
+                        </span>
+                        </a>
+                        <a th:href="@{/discgolf/deleteCourse/{id}(id=${course.id})}" title="Remove Course"
+                           data-target="#deleteCourseModal" class="table-link danger" id="deleteButton">
+                            <span id="deleteCourse" class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-trash-o fa-stack-1x fa-inverse" title="Delete this course"></i>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            <br>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/discgolf/fragments/deleteCourseModal :: deleteCourseModal"></div>
+
+<script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
+<script th:src="@{/js/discgolf/course.js}"></script>
+</body>
+</html>

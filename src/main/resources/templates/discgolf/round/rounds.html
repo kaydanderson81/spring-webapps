@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link th:href="@{/css/fontawesome/css/all.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/discgolf/round.css}">
+
+    <title>Rounds</title>
+
+
+</head>
+<body>
+<div th:replace="fragments/navbars/libraryNavbar :: navbar"></div>
+<div class="container">
+    <div class="subContainer">
+        <h1>Rounds</h1>
+        <a class="col-sm-4" th:href="@{/discgolf}">Disc Golf Home</a>
+        <div class="row" id="username">
+            <b class="col-sm-8">Username: <span sec:authentication="principal.username"></span></b>
+        </div>
+    </div>
+    <a>Add Round</a>
+    <form action="#" th:action="@{/discgolf/newRound}" th:object="${course}"
+          method="GET">
+        <div class="form-group">
+            <div class="form-group blu-margin">
+                <select th:name="course" class="form-control" onchange="this.form.submit()">
+                    <option th:value="0" th:text="${'Please Select'}"></option>
+                    <option th:each="course : ${courses}"
+                            th:text="${course.name}" >
+
+                    </option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="container">
+    <div>
+        <a>Rounds Played</a>
+    </div>
+    <div >
+        <div th:each="roundCourse : ${rounds}" class="card">
+            <button class="accordion">
+                <div class="row">
+                    <span class="col" th:text="${roundCourse.key.name}"></span>
+                    <div class="col">
+                        <label>Course par:</label>
+                        <span th:text="${roundCourse.key.par}"></span>
+                    </div>
+                    <div class="col">
+                        <label>Course average:</label>
+                        <span th:text="${#numbers.formatDecimal(roundCourse.key.courseAverage, 0, 2)}"></span>
+                    </div>
+                </div>
+            </button>
+            <div class="panel">
+                <div class="row">
+                    <div class="col-3">
+                        <label>Record: </label>
+                        <label th:if="${roundCourse.key.record > 0}" th:text="${'+' + roundCourse.key.record + ' (' + (roundCourse.key.par + roundCourse.key.record) + ')'}"></label>
+                        <label th:if="${roundCourse.key.record < 0}" th:text="${roundCourse.key.record + ' (' + (roundCourse.key.record + roundCourse.key.par) + ')'}"></label>
+                        <label th:if="${roundCourse.key.record == 0}" th:text="${'E (' + (roundCourse.key.record + roundCourse.key.par) + ')'}"></label>
+                    </div>
+                    <div class="col-3">
+                        <label>Times played: </label>
+                        <label th:text="${#lists.size(roundCourse.value)}"></label>
+                    </div>
+                    <div class="col-3">
+                        <label>My best:</label>
+                        <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.key.id) - roundCourse.key.par) == 0}" th:text="${'E'}"></label>
+                        <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.key.id) - roundCourse.key.par) < 0}"
+                               th:text="${roundService.getBestRoundScoreByCourseId(userId, roundCourse.key.id) - roundCourse.key.par}"></label>
+                        <label th:text="${'(' + roundService.getBestRoundScoreByCourseId(userId, roundCourse.key.id) + ')'}"></label>
+                    </div>
+                    <div class="col-3">
+                        <label>My average: </label>
+                        <label th:text="${#numbers.formatDecimal(roundService.getAverageScoreByCourse(userId, roundCourse.key.id), 0, 2)}"></label>
+                    </div>
+                </div>
+                <hr>
+                <th:block th:each="round : ${roundCourse.value}">
+                <div id="cardBody" class="card-body">
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Date: </label>
+                            <label th:text="${#dates.format(round.roundDate, 'dd-MMM-yyyy')}"></label>
+                        </div>
+                        <div class="col-3">
+                            <label>Score: </label>
+                            <label th:if="${round.total - round.course.par == 0}" th:text="${'E'}"></label>
+                            <label th:if="${round.total - round.course.par > 0}" th:text="${'+' + (round.total - round.course.par)}"></label>
+                            <label th:text="${'(' + round.total + ')'}"></label>
+                        </div>
+                        <div class="col-6">
+<!--                            <div class="container-fluid">-->
+<!--                                <canvas th:attr="data-counts=${roundService.getListOfScoresByRoundId(round.roundId)}" th:id="myChart"></canvas>-->
+<!--                            </div>-->
+                            <div class="container-fluid">
+                                <canvas th:id="myChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div >
+                        <table id="courseInfo" class="table table-bordered w-auto">
+                            <th:block th:each="course : ${round.course}">
+                                <tr>
+                                    <th th:text="${'Hole'}"></th>
+                                    <th th:each="hole : ${course.holes}" th:text="${hole.number}"></th>
+                                    <th th:text="${'Total'}"></th>
+                                </tr>
+                                <tr>
+                                    <td th:text="${'Par'}"></td>
+                                    <td th:each="par : ${course.holes}" th:text="${par.par}"></td>
+                                    <td th:text="${course.par}"></td>
+                                </tr>
+                                <tr>
+                                    <td th:text="${'Score'}"></td>
+                                    <th:block th:each="score : ${round.scores}">
+                                        <td th:text="${score.score}" th:style="'background-color: ' + ${score.color}">
+                                        </td>
+                                    </th:block>
+                                    <td th:text="${round.total}"></td>
+                                </tr>
+                            </th:block>
+                        </table>
+                        <br>
+                        <a th:href="@{/discgolf/deleteRound/{id}(id=${round.roundId})}" title="Remove Course"
+                           data-target="#deleteRoundModal" class="table-link danger" id="deleteRoundButton" >
+                            <span id="deleteRound" class="fa-stack">
+                                <i class="fa fa-square fa-stack-2x"></i>
+                                <i class="fa fa-trash-o fa-stack-1x fa-inverse" title="Delete this round"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <hr>
+                    <div class="modal modal-danger" tabindex="-1" role="dialog" id="deleteRoundModal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirm Delete</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete this round?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="" class="btn btn-primary" id="delRound">Confirm</a>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    let rounds = /*[[${roundsJson}]]*/ {};
+
+</script>
+
+<script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script th:src="@{/js/discgolf/userRounds.js}"></script>
+</body>
+</html>
