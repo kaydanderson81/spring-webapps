@@ -1,7 +1,6 @@
 package com.main.discgolf.service.round;
 
 import com.main.discgolf.model.Course;
-import com.main.discgolf.model.Hole;
 import com.main.discgolf.model.Round;
 import com.main.discgolf.model.RoundArray;
 
@@ -19,6 +18,8 @@ public interface RoundService {
     Round saveRound(Round round);
 
     void deleteRoundById(Long id);
+
+
 
     List<List<Round>> getAllRoundsInListsByCourseId();
 

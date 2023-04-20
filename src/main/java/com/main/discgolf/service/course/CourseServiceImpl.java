@@ -1,10 +1,12 @@
 package com.main.discgolf.service.course;
 
 import com.main.discgolf.model.Course;
+import com.main.discgolf.model.CourseByRound;
 import com.main.discgolf.model.Hole;
 import com.main.discgolf.model.Round;
 import com.main.discgolf.repository.CourseRepository;
 import com.main.discgolf.repository.RoundRepository;
+import com.main.discgolf.service.round.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private RoundRepository roundRepository;
+
+    @Autowired
+    private RoundService roundService;
 
     @Override
     public List<Course> getAllCourses() {
@@ -75,6 +80,28 @@ public class CourseServiceImpl implements CourseService {
     public double getCourseAverageByCourseId(Long courseId) {
         List<Round> rounds = roundRepository.findAllRoundsByCourseId(courseId);
         return rounds.stream().filter(r -> r.getCourse().getId().equals(courseId)).collect(Collectors.averagingDouble(Round::getTotal));
+    }
+
+    @Override
+    public List<CourseByRound> getListOfCourseByRoundByUserId(Long userId) {
+        List<CourseByRound> courseByRounds = new ArrayList<>();
+        List<Course> courses = getAllCourses();
+
+        for (Course course : courses) {
+            CourseByRound courseByRound = new CourseByRound();
+            courseByRound.setCourseId(course.getId());
+            courseByRound.setCourseName(course.getName());
+            courseByRound.setCoursePar(course.getPar());
+            courseByRound.setCourseRecord(course.getRecord());
+            courseByRound.setCourseAverage(course.getCourseAverage());
+            courseByRound.setTimesPlayed(roundRepository.findAllRoundsByCourseId(course.getId()).size());
+            courseByRound.setRounds(roundRepository.findAllRoundsByUserIdAndCourseId(userId, course.getId()));
+            for (Round round : courseByRound.getRounds()) {
+                round.setBarChartArray(roundService.getListOfScoresByRoundId(round.getRoundId()));
+            }
+            courseByRounds.add(courseByRound);
+        }
+        return courseByRounds;
     }
 
 

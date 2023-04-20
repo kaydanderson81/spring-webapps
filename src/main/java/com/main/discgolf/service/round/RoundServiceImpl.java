@@ -1,6 +1,9 @@
 package com.main.discgolf.service.round;
 
-import com.main.discgolf.model.*;
+import com.main.discgolf.model.Course;
+import com.main.discgolf.model.Round;
+import com.main.discgolf.model.RoundArray;
+import com.main.discgolf.model.Score;
 import com.main.discgolf.repository.RoundRepository;
 import com.main.discgolf.repository.ScoreRepository;
 import com.main.discgolf.service.course.CourseService;
@@ -61,11 +64,12 @@ public class RoundServiceImpl implements RoundService {
         this.roundRepository.deleteById(id);
     }
 
+
     @Override
     public List<List<Round>> getAllRoundsInListsByCourseId() {
         List<Round> allRounds = getAllRounds();
         List<List<Round>> allRoundsByCourseId = new ArrayList<>();
-        for (Round round : allRounds) {
+        for (Round ignored : allRounds) {
             for (int i=0; i< allRounds.size(); i++) {
                 List<Round> roundsByCourseId = roundRepository.findAllRoundsByCourseId((long) i);
                 allRoundsByCourseId.add(roundsByCourseId);

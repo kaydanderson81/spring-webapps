@@ -44,17 +44,17 @@
         <a>Rounds Played</a>
     </div>
     <div >
-        <div th:each="roundCourse : ${rounds}" class="card">
+        <div th:each="roundCourse : ${courseByRounds}" class="card">
             <button class="accordion">
                 <div class="row">
-                    <span class="col" th:text="${roundCourse.key.name}"></span>
+                    <span class="col" th:text="${roundCourse.courseName}"></span>
                     <div class="col">
                         <label>Course par:</label>
-                        <span th:text="${roundCourse.key.par}"></span>
+                        <span th:text="${roundCourse.coursePar}"></span>
                     </div>
                     <div class="col">
                         <label>Course average:</label>
-                        <span th:text="${#numbers.formatDecimal(roundCourse.key.courseAverage, 0, 2)}"></span>
+                        <span th:text="${#numbers.formatDecimal(roundCourse.courseAverage, 0, 2)}"></span>
                     </div>
                 </div>
             </button>
@@ -62,28 +62,28 @@
                 <div class="row">
                     <div class="col-3">
                         <label>Record: </label>
-                        <label th:if="${roundCourse.key.record > 0}" th:text="${'+' + roundCourse.key.record + ' (' + (roundCourse.key.par + roundCourse.key.record) + ')'}"></label>
-                        <label th:if="${roundCourse.key.record < 0}" th:text="${roundCourse.key.record + ' (' + (roundCourse.key.record + roundCourse.key.par) + ')'}"></label>
-                        <label th:if="${roundCourse.key.record == 0}" th:text="${'E (' + (roundCourse.key.record + roundCourse.key.par) + ')'}"></label>
+                        <label th:if="${roundCourse.courseRecord > 0}" th:text="${'+' + roundCourse.courseRecord + ' (' + (roundCourse.coursePar + roundCourse.courseRecord) + ')'}"></label>
+                        <label th:if="${roundCourse.courseRecord < 0}" th:text="${roundCourse.courseRecord + ' (' + (roundCourse.courseRecord + roundCourse.coursePar) + ')'}"></label>
+                        <label th:if="${roundCourse.courseRecord == 0}" th:text="${'E (' + (roundCourse.courseRecord + roundCourse.coursePar) + ')'}"></label>
                     </div>
                     <div class="col-3">
                         <label>Times played: </label>
-                        <label th:text="${#lists.size(roundCourse.value)}"></label>
+                        <label th:text="${#lists.size(roundCourse.timesPlayed)}"></label>
                     </div>
                     <div class="col-3">
                         <label>My best:</label>
-                        <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.key.id) - roundCourse.key.par) == 0}" th:text="${'E'}"></label>
-                        <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.key.id) - roundCourse.key.par) < 0}"
-                               th:text="${roundService.getBestRoundScoreByCourseId(userId, roundCourse.key.id) - roundCourse.key.par}"></label>
-                        <label th:text="${'(' + roundService.getBestRoundScoreByCourseId(userId, roundCourse.key.id) + ')'}"></label>
+                        <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar) == 0}" th:text="${'E'}"></label>
+                        <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar) < 0}"
+                               th:text="${roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar}"></label>
+                        <label th:text="${'(' + roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) + ')'}"></label>
                     </div>
                     <div class="col-3">
                         <label>My average: </label>
-                        <label th:text="${#numbers.formatDecimal(roundService.getAverageScoreByCourse(userId, roundCourse.key.id), 0, 2)}"></label>
+                        <label th:text="${#numbers.formatDecimal(roundService.getAverageScoreByCourse(userId, roundCourse.courseId), 0, 2)}"></label>
                     </div>
                 </div>
                 <hr>
-                <th:block th:each="round : ${roundCourse.value}">
+                <th:block th:each="round : ${roundCourse.rounds}">
                 <div id="cardBody" class="card-body">
                     <div class="row">
                         <div class="col-3">
@@ -97,11 +97,8 @@
                             <label th:text="${'(' + round.total + ')'}"></label>
                         </div>
                         <div class="col-6">
-<!--                            <div class="container-fluid">-->
-<!--                                <canvas th:attr="data-counts=${roundService.getListOfScoresByRoundId(round.roundId)}" th:id="myChart"></canvas>-->
-<!--                            </div>-->
                             <div class="container-fluid">
-                                <canvas th:id="myChart"></canvas>
+                                <canvas th:roundId="${round.roundId}" th:id="myChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -165,8 +162,7 @@
     </div>
 </div>
 <script th:inline="javascript">
-    let rounds = /*[[${roundsJson}]]*/ {};
-
+    let rounds = /*[[${roundsJsonNode}]]*/ {};
 </script>
 
 <script type="text/javascript" src="/js/jquery-3.6.0.js"></script>

@@ -13,6 +13,8 @@ public class CourseByRound {
 
     private List<Round> rounds;
 
+    public CourseByRound(){}
+
     public CourseByRound(Long courseId, String courseName, int coursePar, int courseRecord, double courseAverage, int timesPlayed, List<Round> rounds) {
         this.courseId = courseId;
         this.courseName = courseName;

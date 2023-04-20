@@ -1,6 +1,7 @@
 package com.main.discgolf.service.course;
 
 import com.main.discgolf.model.Course;
+import com.main.discgolf.model.CourseByRound;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface CourseService {
     List<Integer> getCourseListOfHolePars(Course course);
 
     double getCourseAverageByCourseId(Long id);
+
+    List<CourseByRound> getListOfCourseByRoundByUserId(Long userId);
 }

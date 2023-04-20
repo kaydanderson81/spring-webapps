@@ -1,11 +1,10 @@
 package com.main.discgolf.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.main.discgolf.model.Course;
+import com.main.discgolf.model.CourseByRound;
 import com.main.discgolf.model.Round;
-import com.main.discgolf.model.RoundArray;
 import com.main.discgolf.repository.RoundRepository;
 import com.main.discgolf.repository.ScoreRepository;
 import com.main.discgolf.service.course.CourseService;
@@ -17,13 +16,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/discgolf")
@@ -43,30 +40,32 @@ public class RoundController {
     @Autowired
     private RoundRepository roundRepository;
 
+    public RoundController() {
+    }
+
     @GetMapping("/rounds/{id}")
     public String roundsHome(@PathVariable(value = "id") Long id,
                              Model model) {
         List<Course> courses = courseService.getAllCourses();
         List<Round> rounds = userService.getUserById(id).getRounds();
 
+        List<CourseByRound> courseByRounds = courseService.getListOfCourseByRoundByUserId(id);
+        List<Round> jsonRounds = new ArrayList<>();
+        for (CourseByRound courseByRound : courseByRounds) {
+            jsonRounds.addAll(courseByRound.getRounds());
+        }
+
         rounds.sort(Comparator.comparing(Round::getRoundDate).reversed());
-//        Map<Course, List<Round>> mapRoundsByCourse = rounds.stream().collect(Collectors.groupingBy(Round::getCourse));
-//        List<RoundArray> roundArrays = roundService.getListOfRoundArrays();
-
-
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        Map<Course, List<Round>> mapRoundsByCourse = rounds.stream().collect(Collectors.groupingBy(Round::getCourse));
-        JsonNode jsonNode = mapper.valueToTree(mapRoundsByCourse);
-        model.addAttribute("roundsJson", jsonNode);
 
-
+        model.addAttribute("courses", courses);
+        model.addAttribute("roundsJsonNode", jsonRounds);
         model.addAttribute("userId", id);
         model.addAttribute("roundService", roundService);
-        model.addAttribute("courses", courses);
-        model.addAttribute("rounds", mapRoundsByCourse);
-//        model.addAttribute("roundArrays", roundArrays);
+        model.addAttribute("courseByRounds", courseByRounds);
+
         return "/discgolf/round/rounds";
     }
 
