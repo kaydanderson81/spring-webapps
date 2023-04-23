@@ -41,6 +41,9 @@ public class Round {
     @Transient
     private List<Integer> barChartArray;
 
+    @Transient
+    private int timesPlayed;
+
     public Round() {}
 
     public Round(Long roundId, Course course, List<Score> scores, Date roundDate, int total) {
@@ -51,13 +54,15 @@ public class Round {
         this.total = total;
     }
 
-    public Round(Long roundId, Course course, List<Score> scores, Date roundDate, int total, List<Integer> barChartArray) {
+    public Round(Long roundId, Course course, List<Score> scores, Date roundDate, int total,
+                 List<Integer> barChartArray, int timesPlayed) {
         this.roundId = roundId;
         this.course = course;
         this.scores = scores;
         this.roundDate = roundDate;
         this.total = total;
         this.barChartArray = barChartArray;
+        this.timesPlayed = timesPlayed;
     }
 
     public Long getRoundId() {
@@ -117,6 +122,14 @@ public class Round {
         this.barChartArray = barChartArray;
     }
 
+    public int getTimesPlayed() {
+        return timesPlayed;
+    }
+
+    public void setTimesPlayed(int timesPlayed) {
+        this.timesPlayed = timesPlayed;
+    }
+
     @Override
     public String toString() {
         return "Round{" +
@@ -126,6 +139,7 @@ public class Round {
                 ", roundDate=" + roundDate +
                 ", total=" + total +
                 ", barChartArray=" + barChartArray +
+                ", timesPlayed=" + timesPlayed +
                 '}';
     }
 }

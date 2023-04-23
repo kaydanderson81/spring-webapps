@@ -94,11 +94,11 @@ public class CourseServiceImpl implements CourseService {
             courseByRound.setCoursePar(course.getPar());
             courseByRound.setCourseRecord(course.getRecord());
             courseByRound.setCourseAverage(course.getCourseAverage());
-            courseByRound.setTimesPlayed(roundRepository.findAllRoundsByCourseId(course.getId()).size());
             courseByRound.setRounds(roundRepository.findAllRoundsByUserIdAndCourseId(userId, course.getId()));
             for (Round round : courseByRound.getRounds()) {
                 round.setBarChartArray(roundService.getListOfScoresByRoundId(round.getRoundId()));
             }
+            courseByRound.setTimesPlayed(courseByRound.getRounds().size());
             courseByRounds.add(courseByRound);
         }
         return courseByRounds;

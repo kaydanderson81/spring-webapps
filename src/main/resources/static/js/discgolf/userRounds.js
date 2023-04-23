@@ -37,11 +37,29 @@ $(' #deleteRoundButton').on('click', function(event) {
 
         for (let i = 0; i < scoreCount; i++) {
           const score = roundData.scores[i];
+          let scoreValue;
+          if (score.score === score.holePar - 3) {
+            scoreValue = -3;
+          } else if (score.score === score.holePar - 2) {
+            scoreValue = -2;
+          } else if (score.score === score.holePar - 1) {
+            scoreValue = -1;
+          } else if (score.score === score.holePar) {
+            scoreValue = 0;
+          } else if (score.score === score.holePar + 1) {
+            scoreValue = 1;
+          } else if (score.score === score.holePar + 2) {
+            scoreValue = 2;
+          } else if (score.score === score.holePar + 3) {
+            scoreValue = 3;
+          } else {
+            scoreValue = 4;
+          }
           if (!scoreData[score.name]) {
             scoreData[score.name] = {
               count: 0,
               color: score.color,
-              score: score.score,
+              score: scoreValue,
             };
           }
           scoreData[score.name].count += 1;
@@ -86,4 +104,5 @@ $(' #deleteRoundButton').on('click', function(event) {
             datasets,
           },
         });
+
       });
