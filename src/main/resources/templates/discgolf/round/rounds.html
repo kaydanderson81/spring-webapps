@@ -75,6 +75,8 @@
                         <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar) == 0}" th:text="${'E'}"></label>
                         <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar) < 0}"
                                th:text="${roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar}"></label>
+                        <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar) > 0}"
+                               th:text="'+' + ${roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar}"></label>
                         <label th:text="${'(' + roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) + ')'}"></label>
                     </div>
                     <div class="col-3">
@@ -92,8 +94,9 @@
                         </div>
                         <div class="col-3">
                             <label>Score: </label>
-                            <label th:if="${round.total - round.course.par == 0}" th:text="${'E'}"></label>
-                            <label th:if="${round.total - round.course.par > 0}" th:text="${'+' + (round.total - round.course.par)}"></label>
+                            <label th:if="${round.total - roundCourse.coursePar == 0}" th:text="${'E'}"></label>
+                            <label th:if="${round.total - roundCourse.coursePar > 0}" th:text="${'+' + (round.total - roundCourse.coursePar)}"></label>
+                            <label th:if="${round.total - roundCourse.coursePar < 0}" th:text="${round.total - roundCourse.coursePar}"></label>
                             <label th:text="${'(' + round.total + ')'}"></label>
                         </div>
                         <div class="col-6">

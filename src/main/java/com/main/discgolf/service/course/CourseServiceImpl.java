@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -94,12 +95,15 @@ public class CourseServiceImpl implements CourseService {
             courseByRound.setCoursePar(course.getPar());
             courseByRound.setCourseRecord(course.getRecord());
             courseByRound.setCourseAverage(course.getCourseAverage());
-            courseByRound.setRounds(roundRepository.findAllRoundsByUserIdAndCourseId(userId, course.getId()));
+            List<Round> rounds = roundRepository.findAllRoundsByUserIdAndCourseId(userId, course.getId());
+            rounds.sort(Comparator.comparing(Round::getRoundDate).reversed());
+            courseByRound.setRounds(rounds);
             for (Round round : courseByRound.getRounds()) {
                 round.setBarChartArray(roundService.getListOfScoresByRoundId(round.getRoundId()));
             }
             courseByRound.setTimesPlayed(courseByRound.getRounds().size());
             courseByRounds.add(courseByRound);
+
         }
         return courseByRounds;
     }
