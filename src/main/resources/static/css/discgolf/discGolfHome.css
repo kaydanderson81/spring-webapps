@@ -9,6 +9,11 @@ h1 {
 .subContainer{
     margin-bottom: 20px;
     width: 100%;
+}
+
+.subContainer .h1{
+    margin-bottom: 20px;
+    width: 100%;
     float: left;
 }
 
@@ -30,9 +35,9 @@ h1 {
 	padding-top: 15px;
 	width: 100px;
   	height: 60px;
- 	background-color: #eeeeee;
+ 	border-color: #eeeeee;
  	border-radius: 8px;
- 	margin-right: 20px;
+ 	margin: 20px;
 }
 
 /*Users*/
@@ -42,20 +47,24 @@ h1 {
 
 .subContainer #squareProfile {
     width: 100%;
+    display: flex;
 
 }
 
-#squareProfile {
-
-	margin: 0px;
+#squareProfile .col-5 {
+ 	border: solid #eeeeee;
+ 	border-width: 1px;
+ 	border-radius: 8px;
+    margin: 20px;
 }
 
 #squareProfile div {
-	padding-top: 5px;
-	width: 220px;
-  	height: 220px;
- 	background-color: #eeeeee;
- 	border-radius: 8px;
- 	margin-right: 20px;
+    font-size: 8px;
+	padding: 5px;
+
+}
+
+#squareProfile p {
+    margin-right: 50px;
 }
 

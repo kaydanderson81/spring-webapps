@@ -72,6 +72,7 @@ $(' #deleteRoundButton').on('click', function(event) {
             backgroundColor: data.color,
             data: [data.count],
             score: data.score, // add score value to dataset object
+            borderWidth: 0,
           });
         });
 
@@ -104,5 +105,6 @@ $(' #deleteRoundButton').on('click', function(event) {
             datasets,
           },
         });
+
 
       });

@@ -2,6 +2,7 @@ package com.main.library.service;
 import java.security.Principal;
 import java.util.List;
 
+import com.main.discgolf.model.Score;
 import com.main.library.model.Role;
 import com.main.library.model.User;
 import org.springframework.data.domain.Page;
@@ -31,5 +32,7 @@ public interface UserService extends UserDetailsService{
 	double getAverageScoreByUser(Long userId);
 
 	int getNumberOfAces(Long userId);
+
+	List<Score> getListOfAllScoresForUserByUserId(Long userId);
 	
 }

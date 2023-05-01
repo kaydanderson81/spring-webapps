@@ -13,9 +13,12 @@ public class UserInfo {
 
     private List<Round> bestRound;
 
+    private List<Score> scoreList;
+
     public UserInfo(){}
 
-    public UserInfo(Long userId, String name, int roundsPlayed, int holes, double playerAverage, int aces, List<Round> bestRound) {
+    public UserInfo(Long userId, String name, int roundsPlayed, int holes, double playerAverage, int aces,
+                    List<Round> bestRound, List<Score> scoreList) {
         this.userId = userId;
         this.name = name;
         this.roundsPlayed = roundsPlayed;
@@ -23,6 +26,7 @@ public class UserInfo {
         this.playerAverage = playerAverage;
         this.aces = aces;
         this.bestRound = bestRound;
+        this.scoreList = scoreList;
     }
 
     public Long getUserId() {
@@ -81,6 +85,14 @@ public class UserInfo {
         this.bestRound = bestRound;
     }
 
+    public List<Score> getScoreList() {
+        return scoreList;
+    }
+
+    public void setScoreList(List<Score> scoreList) {
+        this.scoreList = scoreList;
+    }
+
     @Override
     public String toString() {
         return "UserInfo{" +
@@ -91,6 +103,7 @@ public class UserInfo {
                 ", playerAverage=" + playerAverage +
                 ", aces=" + aces +
                 ", bestRound=" + bestRound +
+                ", scoreList=" + scoreList +
                 '}';
     }
 }

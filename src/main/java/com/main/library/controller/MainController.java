@@ -1,7 +1,11 @@
 package com.main.library.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.main.discgolf.model.Round;
+import com.main.discgolf.model.Score;
 import com.main.discgolf.model.UserInfo;
+import com.main.discgolf.service.userInfo.UserInfoService;
 import com.main.library.model.User;
 import com.main.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.math.BigInteger;
 import java.security.Principal;
 import java.util.*;
 
@@ -17,6 +22,9 @@ public class MainController {
 	
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private UserInfoService userInfoService;
 	
 	@GetMapping("/home")
 	public String homeMain() {
@@ -37,42 +45,16 @@ public class MainController {
 	public String discGolfHome(Model model, Principal principal) {
 		String name = principal.getName();
 		long id = getUserIdByUserName(name);
+
 		List<User> users = userService.getAllUsers();
+		List<UserInfo> userInfoList = userInfoService.getListOfUserInfoByListOfUser(users);
+		System.out.println("User info: " + userInfoList);
 
-
-		List<UserInfo> userInfos = new ArrayList<>();
-		for (User user : users) {
-			List<Round> rounds = userService.getUserById(user.getId()).getRounds();
-//			List<Integer> bestRounds = new ArrayList<>();
-			int numHoles = 0;
-			for (Round round : rounds) {
-				int holesPlayed = round.getScores().size();
-				numHoles += holesPlayed;
-			}
-
-
-//			for (int i=0; i< rounds.size();i++) {
-//				bestRounds.add(Collections.min(rounds.get(i).getTotal()));
-//			}
-
-
-
-			UserInfo newUserInfo = new UserInfo();
-			newUserInfo.setUserId(user.getId());
-			newUserInfo.setName(user.getFirstName());
-			newUserInfo.setRoundsPlayed(rounds.size());
-			newUserInfo.setHoles(numHoles);
-			newUserInfo.setPlayerAverage(userService.getAverageScoreByUser(user.getId()));
-			newUserInfo.setAces(userService.getNumberOfAces(user.getId()));
-//			newUserInfo.setBestRound();
-			userInfos.add(newUserInfo);
-		}
-
-
-		System.out.println("User info: " + userInfos);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
 
 		model.addAttribute("userId", id);
-		model.addAttribute("users", userInfos);
+		model.addAttribute("users", userInfoList);
 		return "/discgolf/discGolfHome";
 	}
 

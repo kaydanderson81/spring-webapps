@@ -12,6 +12,7 @@ import com.main.discgolf.model.Course;
 import com.main.discgolf.model.Round;
 import com.main.discgolf.model.Score;
 import com.main.discgolf.repository.CourseRepository;
+import com.main.discgolf.repository.ScoreRepository;
 import com.main.discgolf.service.round.RoundServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,6 +47,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private RoundServiceImpl roundService;
+
+	@Autowired
+	private ScoreRepository scoreRepository;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -194,6 +198,24 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return aces;
+	}
+
+	@Override
+	public List<Score> getListOfAllScoresForUserByUserId(Long userId) {
+		List<Round> rounds = userService.getUserById(userId).getRounds();
+		List<Score> scores = new ArrayList<>();
+		for (Round round : rounds) {
+			scores.addAll(round.getScores());
+		}
+
+
+//		List<Object[]> scoresList = userRepository.findAllScoresForAUserByUserId(1L);
+//		for (Object object : scoresList) {
+//			System.out.println("Obj1: " );
+//		}
+		System.out.println("Size: " + scores);
+		System.out.println("Size: " + scores.size());
+		return scores;
 	}
 
 }

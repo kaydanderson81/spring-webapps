@@ -49,10 +49,6 @@ public class RoundController {
         List<Course> courses = courseService.getAllCourses();
         List<Round> rounds = userService.getUserById(id).getRounds();
 
-        int numRounds = roundRepository.findAllRoundsByUserIdAndCourseId(id, 1L).size();
-
-        System.out.println("numRounds: " + numRounds);
-
         List<CourseByRound> courseByRounds = courseService.getListOfCourseByRoundByUserId(id);
         System.out.println("courseByRounds" + courseByRounds);
         List<Round> jsonRounds = new ArrayList<>();

@@ -58,13 +58,13 @@ public class CourseController extends MainController {
 
         List<Hole> holes = new ArrayList<>();
         int holeNum = 0;
-        for (int i=0; i< parValues.size(); i++) {
-                Hole hole = new Hole();
-                holeNum++;
-                hole.setNumber(holeNum);
-                hole.setPar(parValues.get(i));
-                holes.add(hole);
-            }
+        for (Integer parValue : parValues) {
+            Hole hole = new Hole();
+            holeNum++;
+            hole.setNumber(holeNum);
+            hole.setPar(parValue);
+            holes.add(hole);
+        }
 
         Integer sum = parValues.stream()
                 .reduce(0, Integer::sum);
