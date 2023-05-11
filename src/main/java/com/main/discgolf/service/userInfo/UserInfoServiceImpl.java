@@ -3,6 +3,7 @@ package com.main.discgolf.service.userInfo;
 import com.main.discgolf.model.Round;
 import com.main.discgolf.model.Score;
 import com.main.discgolf.model.UserInfo;
+import com.main.discgolf.repository.CourseRepository;
 import com.main.library.model.User;
 import com.main.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CourseRepository courseRepository;
+
     @Override
     public List<UserInfo> getListOfUserInfoByListOfUser(List<User> users) {
         List<UserInfo> userInfoList = new ArrayList<>();
@@ -26,6 +30,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             UserInfo newUserInfo = new UserInfo();
             newUserInfo.setUserId(user.getId());
             newUserInfo.setName(user.getFirstName());
+            newUserInfo.setNumberCoursesPlayed(courseRepository.findAllCoursesAUserHasPlayedByUserId(user.getId()).size());
             newUserInfo.setRoundsPlayed(rounds.size());
             newUserInfo.setScoreList(scoreList);
             newUserInfo.setHoles(scoreList.size());

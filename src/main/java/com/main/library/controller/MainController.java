@@ -2,10 +2,8 @@ package com.main.library.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.main.discgolf.model.Round;
-import com.main.discgolf.model.Score;
 import com.main.discgolf.model.UserInfo;
-import com.main.discgolf.service.userInfo.UserInfoService;
+import com.main.discgolf.service.userInfo.UserInfoServiceImpl;
 import com.main.library.model.User;
 import com.main.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.math.BigInteger;
 import java.security.Principal;
-import java.util.*;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -24,8 +21,8 @@ public class MainController {
 	private UserService userService;
 
 	@Autowired
-	private UserInfoService userInfoService;
-	
+	private UserInfoServiceImpl userInfoService;
+
 	@GetMapping("/home")
 	public String homeMain() {
 		return "home";
@@ -48,7 +45,6 @@ public class MainController {
 
 		List<User> users = userService.getAllUsers();
 		List<UserInfo> userInfoList = userInfoService.getListOfUserInfoByListOfUser(users);
-		System.out.println("User info: " + userInfoList);
 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JavaTimeModule());

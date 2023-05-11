@@ -72,6 +72,7 @@ public class CourseController extends MainController {
         course.setPar(sum);
 
         this.courseService.saveCourse(course);
+        redirectAttributes.addAttribute("updatedCourseId", course.getId());
         return "redirect:/discgolf/courses";
     }
 
@@ -98,6 +99,7 @@ public class CourseController extends MainController {
         holeService.deleteHoleById(oldHoleList.getHoleId());
         updateCourse.addHolesToCourse(holeList);
         this.courseService.saveCourse(updateCourse);
+        redirectAttributes.addAttribute("updatedEmployeeId", updateCourse.getId());
         return "redirect:/discgolf/courses";
     }
 

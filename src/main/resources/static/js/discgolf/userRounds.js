@@ -6,6 +6,30 @@ $(' #deleteRoundButton').on('click', function(event) {
 
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const updatedCourseId = urlParams.get('updatedCourseId');
+
+      const courseId = 'course-' + updatedCourseId;
+      if (updatedCourseId) {
+        const accordionButton = document.getElementById(`course-${updatedCourseId}`);
+        if (accordionButton) {
+          // Add the "active" class to the button
+          accordionButton.classList.add('active');
+
+          // Expand the corresponding accordion panel
+          const accordionPanel = accordionButton.nextElementSibling;
+          accordionPanel.style.maxHeight = accordionPanel.scrollHeight + "px";
+
+          // Scroll to the accordion
+          setTimeout(() => {
+            accordionButton.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 500);
+        }
+      }
+
+    });
+
     console.log(JSON.stringify(rounds));
 
     function getRoundById(rounds, roundId) {

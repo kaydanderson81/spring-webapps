@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,24 +23,23 @@
             <a th:href = "@{/discgolf/newCourseForm}" class="btn btn-primary btn-sm mb-3">Add Course</a>
         </div>
     </div>
+    <hr>
     <div class="container" th:each="course : ${courses}">
-        <div>
-            <div id="courseDetails" class="row">
-                <div class="col-sm-3">
-                    <p><strong>Course Name:</strong>
-                        <a th:text="${course.name}"></a>
-                    </p>
-                </div>
-                <div class="col-sm-3">
-                    <p><strong>Course Par:</strong>
-                        <a th:text="${course.par}"></a>
-                    </p>
-                </div>
-                <div class="col-sm-3">
-                    <p><strong>Course Record:</strong>
-                        <a th:text="${course.record}"></a>
-                    </p>
-                </div>
+        <div th:id="'course-' + ${course.id}" class="row">
+            <div class="col">
+                <p><strong>Course Name:</strong>
+                    <a th:text="${course.name}"></a>
+                </p>
+            </div>
+            <div class="col">
+                <p><strong>Par:</strong>
+                    <a th:text="${course.par}"></a>
+                </p>
+            </div>
+            <div class="col">
+                <p><strong>Record:</strong>
+                    <a th:text="${course.record}"></a>
+                </p>
             </div>
         </div>
         <div >
@@ -73,6 +71,8 @@
                     </td>
                 </tr>
             </table>
+            <br>
+            <hr>
             <br>
         </div>
     </div>

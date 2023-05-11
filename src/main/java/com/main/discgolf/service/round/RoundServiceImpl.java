@@ -1,8 +1,8 @@
 package com.main.discgolf.service.round;
 
 import com.main.discgolf.model.Course;
+import com.main.discgolf.model.CourseByRound;
 import com.main.discgolf.model.Round;
-import com.main.discgolf.model.RoundArray;
 import com.main.discgolf.model.Score;
 import com.main.discgolf.repository.RoundRepository;
 import com.main.discgolf.repository.ScoreRepository;
@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoundServiceImpl implements RoundService {
@@ -31,16 +33,6 @@ public class RoundServiceImpl implements RoundService {
 
     @Autowired
     private UserService userService;
-
-    @Override
-    public List<Round> getAllRounds() {
-        return (List<Round>) this.roundRepository.findAll();
-    }
-
-    @Override
-    public List<Round> getAllScoresByRoundId(Long id) {
-        return this.roundRepository.findAllScoresByRoundId(id);
-    }
 
     @Override
     public Round getRoundById(Long id) {
@@ -64,24 +56,13 @@ public class RoundServiceImpl implements RoundService {
         this.roundRepository.deleteById(id);
     }
 
-
     @Override
-    public List<List<Round>> getAllRoundsInListsByCourseId() {
-        List<Round> allRounds = getAllRounds();
-        List<List<Round>> allRoundsByCourseId = new ArrayList<>();
-        for (Round ignored : allRounds) {
-            for (int i=0; i< allRounds.size(); i++) {
-                List<Round> roundsByCourseId = roundRepository.findAllRoundsByCourseId((long) i);
-                allRoundsByCourseId.add(roundsByCourseId);
-
-            }
+    public List<Round> listOfRoundsByCourseByRound(List<CourseByRound> courseByRounds) {
+        List<Round> jsonRounds = new ArrayList<>();
+        for (CourseByRound courseByRound : courseByRounds) {
+            jsonRounds.addAll(courseByRound.getRounds());
         }
-        return allRoundsByCourseId;
-    }
-
-    @Override
-    public List<Round> getAllRoundsByCourseId(Long courseId) {
-        return roundRepository.findAllRoundsByCourseId(courseId);
+        return jsonRounds;
     }
 
     @Override
@@ -146,37 +127,11 @@ public class RoundServiceImpl implements RoundService {
         return round;
     }
 
-
-    @Override
-    public int getBestRoundScoreByCourseId(Long userId, Long courseId) {
-        List<Round> rounds = roundRepository.findAllRoundsByUserId(userId);
-        rounds.removeIf(round -> !round.getCourse().getId().equals(courseId));
-        IntSummaryStatistics summaryStatistics = rounds.stream().mapToInt(Round::getTotal).summaryStatistics();
-        return summaryStatistics.getMin();
-    }
-
     @Override
     public List<Integer> getListOfScoresByRoundId(Long id) {
         return scoreRepository.findAllScoresByRoundId(id);
     }
 
-    @Override
-    public List<RoundArray> getListOfRoundArrays() {
-        List<Round> rounds = getAllRounds();
-        List<RoundArray> roundArrays = new ArrayList<>();
-        for (Round round : rounds) {
-            RoundArray roundArray = new RoundArray();
-            List<Integer> scoreArray = getListOfScoresByRoundId(round.getRoundId());
-            roundArray.setId(round.getRoundId());
-            roundArray.setRoundArray(scoreArray);
-            roundArrays.add(roundArray);
-        }
-        return roundArrays;
-    }
 
-    @Override
-    public double getAverageScoreByCourse(Long userId, Long courseId) {
-        List<Round> rounds = userService.getUserById(userId).getRounds();
-        return rounds.stream().filter(r -> r.getCourse().getId().equals(courseId)).collect(Collectors.averagingDouble(Round::getTotal));
-    }
+
 }

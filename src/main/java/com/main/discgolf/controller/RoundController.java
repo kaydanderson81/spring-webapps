@@ -15,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -46,23 +46,15 @@ public class RoundController {
     @GetMapping("/rounds/{id}")
     public String roundsHome(@PathVariable(value = "id") Long id,
                              Model model) {
-        List<Course> courses = courseService.getAllCourses();
-        List<Round> rounds = userService.getUserById(id).getRounds();
-
-        List<CourseByRound> courseByRounds = courseService.getListOfCourseByRoundByUserId(id);
-        System.out.println("courseByRounds" + courseByRounds);
-        List<Round> jsonRounds = new ArrayList<>();
-        for (CourseByRound courseByRound : courseByRounds) {
-            jsonRounds.addAll(courseByRound.getRounds());
-        }
-
-        rounds.sort(Comparator.comparing(Round::getRoundDate).reversed());
+        List<Course> courses = courseService.getAllCourses(); //for drop down list
+        courses.sort(Comparator.comparing(Course::getName));
+        List<CourseByRound> courseByRounds = courseService.getListOfCourseByRoundByUserId(id); //for userRounds
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
         model.addAttribute("courses", courses);
-        model.addAttribute("roundsJsonNode", jsonRounds);
+        model.addAttribute("roundsJsonNode", roundService.listOfRoundsByCourseByRound(courseByRounds));
         model.addAttribute("userId", id);
         model.addAttribute("roundService", roundService);
         model.addAttribute("courseByRounds", courseByRounds);
@@ -76,7 +68,6 @@ public class RoundController {
 
         Round round = new Round();
         Course selectedCourse = courseService.getCourseByName(course);
-        System.out.println("Course " + selectedCourse.toString());
         model.addAttribute("userId", userService.getUserIdByPrincipalName(principal));
         model.addAttribute("newRound", round);
         model.addAttribute("course", selectedCourse);
@@ -88,7 +79,7 @@ public class RoundController {
     public String saveRound(@PathVariable("id") long id,
                             @RequestParam("roundDate") String date,
                             @RequestParam("scoreValues")List<Integer> scores,
-                            Principal principal) throws ParseException {
+                            Principal principal, RedirectAttributes redirectAttributes) throws ParseException {
 
         Course course = courseService.getCourseById(id);
 
@@ -97,13 +88,16 @@ public class RoundController {
         User user = userService.getUserById(userService.getUserIdByPrincipalName(principal));
         user.addRound(round);
         roundService.saveRound(round);
+        redirectAttributes.addAttribute("updatedCourseId", course.getId());
         return "redirect:/discgolf/rounds/" + user.getId();
     }
 
     @GetMapping("/deleteRound/{id}")
-    public String deleteRoundById(@PathVariable(value = "id") long id, Principal principal) {
+    public String deleteRoundById(@PathVariable(value = "id") long id, Principal principal, RedirectAttributes redirectAttributes) {
         Long userId = userService.getUserIdByPrincipalName(principal);
+        Long courseId = roundService.getRoundById(id).getCourse().getId();
         this.roundService.deleteRoundById(id);
+        redirectAttributes.addAttribute("updatedCourseId", courseId);
         return "redirect:/discgolf/rounds/" + userId;
     }
 

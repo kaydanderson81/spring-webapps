@@ -10,10 +10,7 @@ import com.main.discgolf.service.round.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +27,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> getAllCourses() {
-        return (List<Course>) this.courseRepository.findAll();
+        List<Course> courses = (List<Course>) this.courseRepository.findAll();
+        for (Course course : courses) {
+            double average = getCourseAverageByCourseId(course.getId());
+            course.setCourseAverage(average);
+        }
+        return courses;
     }
 
     @Override
@@ -58,8 +60,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course saveCourse(Course course) {
-        double average = getCourseAverageByCourseId(course.getId());
-        course.setCourseAverage(average);
         return this.courseRepository.save(course);
     }
 
@@ -86,7 +86,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseByRound> getListOfCourseByRoundByUserId(Long userId) {
         List<CourseByRound> courseByRounds = new ArrayList<>();
-        List<Course> courses = getAllCourses();
+        List<Course> courses = courseRepository.findAllCoursesAUserHasPlayedByUserId(userId);
 
         for (Course course : courses) {
             CourseByRound courseByRound = new CourseByRound();
@@ -96,6 +96,7 @@ public class CourseServiceImpl implements CourseService {
             courseByRound.setCourseRecord(course.getRecord());
             courseByRound.setCourseAverage(course.getCourseAverage());
             List<Round> rounds = roundRepository.findAllRoundsByUserIdAndCourseId(userId, course.getId());
+
             rounds.sort(Comparator.comparing(Round::getRoundDate).reversed());
             courseByRound.setRounds(rounds);
             for (Round round : courseByRound.getRounds()) {
@@ -105,6 +106,7 @@ public class CourseServiceImpl implements CourseService {
             courseByRounds.add(courseByRound);
 
         }
+        courseByRounds.sort(Comparator.comparing(CourseByRound::getCourseName));
         return courseByRounds;
     }
 

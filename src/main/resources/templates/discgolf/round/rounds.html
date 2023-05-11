@@ -45,7 +45,7 @@
     </div>
     <div >
         <div th:each="roundCourse : ${courseByRounds}" class="card">
-            <button class="accordion">
+            <button th:id="'course-' + ${roundCourse.courseId}" class="accordion">
                 <div class="row">
                     <span class="col" th:text="${roundCourse.courseName}"></span>
                     <div class="col">

@@ -23,4 +23,6 @@ public interface RoundRepository extends CrudRepository<Round, Long> {
     @Query(value = "SELECT * FROM round r WHERE r.user_id = :id AND r.course_id = :courseId", nativeQuery = true)
     List<Round> findAllRoundsByUserIdAndCourseId(@Param("id")Long id, @Param("courseId")Long courseId);
 
+
+
 }

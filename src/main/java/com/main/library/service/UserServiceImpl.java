@@ -37,7 +37,7 @@ import com.main.library.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
 	private UserService userService;
@@ -115,8 +115,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User getUserByEmail(String email) {
-		User user = userRepository.findByEmail(email);
-		return user;
+		return userRepository.findByEmail(email);
 	}
 
 
@@ -207,14 +206,6 @@ public class UserServiceImpl implements UserService {
 		for (Round round : rounds) {
 			scores.addAll(round.getScores());
 		}
-
-
-//		List<Object[]> scoresList = userRepository.findAllScoresForAUserByUserId(1L);
-//		for (Object object : scoresList) {
-//			System.out.println("Obj1: " );
-//		}
-		System.out.println("Size: " + scores);
-		System.out.println("Size: " + scores.size());
 		return scores;
 	}
 

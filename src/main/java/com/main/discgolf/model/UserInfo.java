@@ -6,6 +6,8 @@ public class UserInfo {
 
     private Long userId;
     private String name;
+
+    private int numberCoursesPlayed;
     private int roundsPlayed;
     private int holes;
     private double playerAverage;
@@ -17,10 +19,11 @@ public class UserInfo {
 
     public UserInfo(){}
 
-    public UserInfo(Long userId, String name, int roundsPlayed, int holes, double playerAverage, int aces,
+    public UserInfo(Long userId, String name, int numberCoursesPlayed, int roundsPlayed, int holes, double playerAverage, int aces,
                     List<Round> bestRound, List<Score> scoreList) {
         this.userId = userId;
         this.name = name;
+        this.numberCoursesPlayed = numberCoursesPlayed;
         this.roundsPlayed = roundsPlayed;
         this.holes = holes;
         this.playerAverage = playerAverage;
@@ -43,6 +46,14 @@ public class UserInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getNumberCoursesPlayed() {
+        return numberCoursesPlayed;
+    }
+
+    public void setNumberCoursesPlayed(int numberCoursesPlayed) {
+        this.numberCoursesPlayed = numberCoursesPlayed;
     }
 
     public int getRoundsPlayed() {
