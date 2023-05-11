@@ -1,0 +1,16 @@
+----------------------------------------------------------------
+Thu May 11 17:26:15 CEST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0188-0b6b-8297-000003064840 
+on database directory memory:/Users/kaydanderson/Desktop/Spring-Apps/spring-webapps/979e05c5-c835-4da7-b51f-e77d93d803a5 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@251a69d7 
+Loaded from file:/Users/kaydanderson/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=18.0.2+9-61
+user.dir=/Users/kaydanderson/Desktop/Spring-Apps/spring-webapps
+os.name=Mac OS X
+os.arch=x86_64
+os.version=13.3.1
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Thu May 11 17:26:17 CEST 2023:
+Shutting down instance a816c00e-0188-0b6b-8297-000003064840 on database directory memory:/Users/kaydanderson/Desktop/Spring-Apps/spring-webapps/979e05c5-c835-4da7-b51f-e77d93d803a5 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@251a69d7 
