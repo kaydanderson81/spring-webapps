@@ -5,8 +5,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.main.discgolf.model.Course;
 import com.main.discgolf.model.CourseByRound;
 import com.main.discgolf.model.Round;
-import com.main.discgolf.repository.RoundRepository;
-import com.main.discgolf.repository.ScoreRepository;
 import com.main.discgolf.service.course.CourseService;
 import com.main.discgolf.service.round.RoundService;
 import com.main.library.model.User;
@@ -33,12 +31,7 @@ public class RoundController {
     private RoundService roundService;
 
     @Autowired
-    private ScoreRepository scoreRepository;
-
-    @Autowired
     private CourseService courseService;
-    @Autowired
-    private RoundRepository roundRepository;
 
     public RoundController() {
     }
