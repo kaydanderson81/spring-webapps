@@ -7,17 +7,13 @@ import com.main.discgolf.model.Score;
 import com.main.discgolf.repository.RoundRepository;
 import com.main.discgolf.repository.ScoreRepository;
 import com.main.discgolf.service.course.CourseService;
-import com.main.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RoundServiceImpl implements RoundService {
@@ -30,9 +26,6 @@ public class RoundServiceImpl implements RoundService {
 
     @Autowired
     private CourseService courseService;
-
-    @Autowired
-    private UserService userService;
 
     @Override
     public Round getRoundById(Long id) {
@@ -125,6 +118,25 @@ public class RoundServiceImpl implements RoundService {
         }
         round.setScores(scoreList);
         return round;
+    }
+
+    @Override
+    public int getBestRoundScoreByCourseId(Long userId, Long courseId) {
+        List<Round> rounds = roundRepository.findAllRoundsByUserIdAndCourseId(userId, courseId);
+        IntSummaryStatistics intSummaryStatistics = rounds.stream()
+                .map(Round::getTotal)
+                .mapToInt(Integer::intValue).summaryStatistics();
+        return intSummaryStatistics.getMin();
+    }
+
+    @Override
+    public double getAverageScoreByCourse(Long userId, Long courseId) {
+        List<Round> rounds = roundRepository.findAllRoundsByUserIdAndCourseId(userId, courseId);
+        List<Double> totalList = new ArrayList<>();
+        for (Round round : rounds) {
+            totalList.add((double) round.getTotal());
+        }
+        return totalList.stream().mapToDouble(val -> val).average().orElse(0.0);
     }
 
     @Override
