@@ -9,6 +9,13 @@
     <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/discgolf/round.css}">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
+
+
+
+
+
     <title>Rounds</title>
 
 
@@ -60,28 +67,35 @@
             </button>
             <div class="panel">
                 <div class="row">
-                    <div class="col-3">
-                        <label>Record: </label>
-                        <label th:if="${roundCourse.courseRecord > 0}" th:text="${'+' + roundCourse.courseRecord + ' (' + (roundCourse.coursePar + roundCourse.courseRecord) + ')'}"></label>
-                        <label th:if="${roundCourse.courseRecord < 0}" th:text="${roundCourse.courseRecord + ' (' + (roundCourse.courseRecord + roundCourse.coursePar) + ')'}"></label>
-                        <label th:if="${roundCourse.courseRecord == 0}" th:text="${'E (' + (roundCourse.courseRecord + roundCourse.coursePar) + ')'}"></label>
+                    <div class="col-4">
+                        <div>
+                            <label>Record: </label>
+                            <label th:if="${roundCourse.courseRecord > 0}" th:text="${'+' + roundCourse.courseRecord + ' (' + (roundCourse.coursePar + roundCourse.courseRecord) + ')'}"></label>
+                            <label th:if="${roundCourse.courseRecord < 0}" th:text="${roundCourse.courseRecord + ' (' + (roundCourse.courseRecord + roundCourse.coursePar) + ')'}"></label>
+                            <label th:if="${roundCourse.courseRecord == 0}" th:text="${'E (' + (roundCourse.courseRecord + roundCourse.coursePar) + ')'}"></label>
+                        </div>
+                        <div>
+                            <label>Times played: </label>
+                            <label th:text="${#lists.size(roundCourse.rounds)}"></label>
+                        </div>
+                        <div>
+                            <label>My best:</label>
+                            <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar) == 0}" th:text="${'E'}"></label>
+                            <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar) < 0}"
+                                   th:text="${roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar}"></label>
+                            <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar) > 0}"
+                                   th:text="'+' + ${roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar}"></label>
+                            <label th:text="${'(' + roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) + ')'}"></label>
+                        </div>
+                        <div>
+                            <label>My average: </label>
+                            <label th:text="${#numbers.formatDecimal(roundService.getAverageScoreByCourse(userId, roundCourse.courseId), 0, 2)}"></label>
+                        </div>
                     </div>
-                    <div class="col-3">
-                        <label>Times played: </label>
-                        <label th:text="${#lists.size(roundCourse.rounds)}"></label>
-                    </div>
-                    <div class="col-3">
-                        <label>My best:</label>
-                        <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar) == 0}" th:text="${'E'}"></label>
-                        <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar) < 0}"
-                               th:text="${roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar}"></label>
-                        <label th:if="${(roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar) > 0}"
-                               th:text="'+' + ${roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) - roundCourse.coursePar}"></label>
-                        <label th:text="${'(' + roundService.getBestRoundScoreByCourseId(userId, roundCourse.courseId) + ')'}"></label>
-                    </div>
-                    <div class="col-3">
-                        <label>My average: </label>
-                        <label th:text="${#numbers.formatDecimal(roundService.getAverageScoreByCourse(userId, roundCourse.courseId), 0, 2)}"></label>
+                    <div class="col-8">
+                        <div class="container-fluid">
+                            <canvas th:courseId="${roundCourse.courseId}" th:id="courseProgress"></canvas>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -166,11 +180,12 @@
 </div>
 <script th:inline="javascript">
     let rounds = /*[[${roundsJsonNode}]]*/ {};
+    let courses = /*[[${courseByRounds}]]*/ {};
 </script>
 
 <script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
 <script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script th:src="@{/js/discgolf/userRounds.js}"></script>
 </body>
 </html>

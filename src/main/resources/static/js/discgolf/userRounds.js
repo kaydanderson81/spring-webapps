@@ -30,7 +30,7 @@ $(' #deleteRoundButton').on('click', function(event) {
 
     });
 
-    console.log(JSON.stringify(rounds));
+    console.log(JSON.stringify(courses));
 
     function getRoundById(rounds, roundId) {
       return rounds.find((round) => round.roundId === Number(roundId));
@@ -129,6 +129,106 @@ $(' #deleteRoundButton').on('click', function(event) {
             datasets,
           },
         });
-
-
       });
+
+
+    // Line Chart
+
+    $(document).ready(function() {
+
+      const courseCharts = document.querySelectorAll('[courseId]');
+      courseCharts.forEach(courseChart => {
+        const courseId = courseChart.getAttribute('courseId');
+        var datasets = [];
+
+        courses.forEach(function(course) {
+          if (course.courseId === parseInt(courseId)) {
+            var dataPoints = [];
+            var monthLabels = []; // Store the month labels
+
+            course.rounds.reverse().forEach(function(round, index) {
+              var month = moment(round.roundDate).format('MMM');
+
+              // Calculate the x-position for the data point
+              var xPos = index;
+
+              dataPoints.push({
+                x: xPos,
+                y: round.total - course.coursePar
+              });
+
+              monthLabels.push(month); // Add the month label
+            });
+
+            datasets.push({
+              label: course.label,
+              data: dataPoints,
+              borderColor: getRandomColor(),
+              lineTension: 0.3,
+              fill: false
+            });
+
+            renderLineChart(courseChart, datasets, monthLabels); // Pass the month labels to the renderLineChart function
+          }
+        });
+      });
+
+      function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+
+      function renderLineChart(element, datasets, labels) {
+        var ctx = element.getContext('2d');
+
+        // Calculate the minimum and maximum y-values from the datasets
+        var minY = Number.MAX_VALUE;
+        var maxY = Number.MIN_VALUE;
+
+        datasets.forEach(function(dataset) {
+          dataset.data.forEach(function(dataPoint) {
+            minY = Math.min(minY, dataPoint.y);
+            maxY = Math.max(maxY, dataPoint.y);
+          });
+        });
+
+        // Adjust the y-axis range by subtracting 5 from the minimum and adding 5 to the maximum
+        var yMin = Math.floor(minY) - 5;
+        var yMax = Math.ceil(maxY) + 5;
+
+        var chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: datasets,
+          },
+          options: {
+            scales: {
+              x: {
+                beginAtZero: true,
+                grid: {
+                  display: false
+                }
+              },
+              y: {
+                beginAtZero: true,
+                min: yMin, // Set the minimum value of the y-axis
+                max: yMax // Set the maximum value of the y-axis
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        });
+      }
+    });
+
+
+
