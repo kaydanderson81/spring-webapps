@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -34,10 +35,9 @@ public class CourseController extends MainController {
 
     @GetMapping("/courses")
     public String coursesHome(Model model) {
-
         List<Course> courses = this.courseService.getAllCourses();
+        courses.sort(Comparator.comparing(Course::getNumberOfTimesPlayed).reversed());
         model.addAttribute("courses", courses);
-//        model.addAttribute("userId", id);
         return "/discgolf/course/courses";
     }
 

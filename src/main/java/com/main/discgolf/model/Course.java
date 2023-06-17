@@ -31,16 +31,19 @@ public class Course {
     @Column(name = "course_average", nullable = false)
     private double courseAverage;
 
+    private int numberOfTimesPlayed;
+
     public Course() {
     }
 
-    public Course(Long id, String name, List<Hole> holes, int par, int record, double courseAverage) {
+    public Course(Long id, String name, List<Hole> holes, int par, int record, double courseAverage, int numberOfTimesPlayed) {
         this.id = id;
         this.name = name;
         this.holes = holes;
         this.par = par;
         this.record = record;
         this.courseAverage = courseAverage;
+        this.numberOfTimesPlayed = numberOfTimesPlayed;
     }
 
     public Long getId() {
@@ -95,6 +98,14 @@ public class Course {
         this.courseAverage = courseAverage;
     }
 
+    public int getNumberOfTimesPlayed() {
+        return numberOfTimesPlayed;
+    }
+
+    public void setNumberOfTimesPlayed(int numberOfTimesPlayed) {
+        this.numberOfTimesPlayed = numberOfTimesPlayed;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -104,6 +115,7 @@ public class Course {
                 ", par=" + par +
                 ", record=" + record +
                 ", courseAverage=" + courseAverage +
+                ", numberOfTimesPlayed=" + numberOfTimesPlayed +
                 '}';
     }
 }

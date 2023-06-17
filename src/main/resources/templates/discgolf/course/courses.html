@@ -27,7 +27,7 @@
     <div class="container" th:each="course : ${courses}">
         <div th:id="'course-' + ${course.id}" class="row">
             <div class="col">
-                <p><strong>Course Name:</strong>
+                <p><strong>Name:</strong>
                     <a th:text="${course.name}"></a>
                 </p>
             </div>
@@ -38,7 +38,14 @@
             </div>
             <div class="col">
                 <p><strong>Record:</strong>
-                    <a th:text="${course.record}"></a>
+                    <a th:if="${course.record > 0}" th:text="${'+' + course.record + ' (' + (course.par + course.record) + ')'}"></a>
+                    <a th:if="${course.record < 0}" th:text="${course.record + ' (' + (course.record + course.par) + ')'}"></a>
+                    <a th:if="${course.record == 0}" th:text="${'E (' + (course.record + course.par) + ')'}"></a>
+                </p>
+            </div>
+            <div class="col">
+                <p><strong>No times played:</strong>
+                    <a th:text="${course.numberOfTimesPlayed}"></a>
                 </p>
             </div>
         </div>

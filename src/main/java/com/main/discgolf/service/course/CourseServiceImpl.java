@@ -30,7 +30,9 @@ public class CourseServiceImpl implements CourseService {
         List<Course> courses = (List<Course>) this.courseRepository.findAll();
         for (Course course : courses) {
             double average = getCourseAverageByCourseId(course.getId());
+            int numberOfTimesPlayed = roundRepository.findAllRoundsByCourseId(course.getId()).size();
             course.setCourseAverage(average);
+            course.setNumberOfTimesPlayed(numberOfTimesPlayed);
         }
         return courses;
     }

@@ -51,9 +51,9 @@ class CourseServiceImplTest {
 
         List<Course> testCourses = new ArrayList<>();
 
-        Course testCourse1 = new Course(1L, "test course 1", testHoles, 7, 5, 6.5);
-        Course testCourse2 = new Course(2L, "test course 2", testHoles, 7, 6, 7.0);
-        Course testCourse3 = new Course(3L, "test course 3", testHoles, 7, 7, 7);
+        Course testCourse1 = new Course(1L, "test course 1", testHoles, 7, 5, 6.5, 3);
+        Course testCourse2 = new Course(2L, "test course 2", testHoles, 7, 6, 7.0, 4);
+        Course testCourse3 = new Course(3L, "test course 3", testHoles, 7, 7, 7, 5);
 
 
         testCourses.add(testCourse1);
@@ -76,7 +76,7 @@ class CourseServiceImplTest {
         testHoles.add(testHole1);
         testHoles.add(testHole2);
 
-        Course testCourse = new Course(1L, "test course", testHoles, 7, 5, 6.5);
+        Course testCourse = new Course(1L, "test course", testHoles, 7, 5, 6.5, 3);
         when(course.getId()).thenReturn(testCourse.getId());
         assertEquals(1L, testCourse.getId());
     }
@@ -89,7 +89,7 @@ class CourseServiceImplTest {
         testHoles.add(testHole1);
         testHoles.add(testHole2);
 
-        Course testCourse = new Course(1L, "test course", testHoles, 7, 5, 6.5);
+        Course testCourse = new Course(1L, "test course", testHoles, 7, 5, 6.5, 3);
         when(course.getName()).thenReturn(testCourse.getName());
         assertEquals("test course", testCourse.getName());
     }
@@ -121,7 +121,7 @@ class CourseServiceImplTest {
         List<Hole> testHoles = new ArrayList<>();
         testHoles.add(testHole1);
         testHoles.add(testHole2);
-        Course testCourse = new Course(1L, "test course", testHoles, 7, 5, 6.5);
+        Course testCourse = new Course(1L, "test course", testHoles, 7, 5, 6.5, 3);
         List<Integer> holeList = courseServiceImpl.getCourseListOfHolePars(testCourse);
 
         assertEquals(holeList.size(), 2);

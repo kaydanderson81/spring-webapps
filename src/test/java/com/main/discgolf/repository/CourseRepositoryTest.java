@@ -44,7 +44,7 @@ public class CourseRepositoryTest {
         testHoles.add(testHole1);
         testHoles.add(testHole2);
 
-        Course testCourse = new Course(1L, "test course", testHoles, 7, 5, 6.5);
+        Course testCourse = new Course(1L, "test course", testHoles, 7, 5, 6.5, 3);
         when(course.getId()).thenReturn(testCourse.getId());
 
         assertEquals("test course", testCourse.getName());
