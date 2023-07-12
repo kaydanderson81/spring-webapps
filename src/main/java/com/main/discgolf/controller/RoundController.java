@@ -9,7 +9,6 @@ import com.main.discgolf.service.course.CourseService;
 import com.main.discgolf.service.round.RoundService;
 import com.main.library.model.User;
 import com.main.library.service.UserService;
-import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

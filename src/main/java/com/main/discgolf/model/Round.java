@@ -102,8 +102,7 @@ public class Round {
     }
 
     public LocalDate getDateWithoutTimeOfDay() {
-        LocalDate date = roundDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        return date;
+        return roundDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     public void addScoreToRound(Score score) {

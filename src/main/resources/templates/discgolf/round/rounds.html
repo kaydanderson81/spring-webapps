@@ -35,13 +35,15 @@
           method="GET">
         <div class="form-group">
             <div class="form-group blu-margin">
-                <select th:name="course" class="form-control" onchange="this.form.submit()">
-                    <option th:value="0" th:text="${'Please Select'}"></option>
-                    <option th:each="course : ${courses}"
-                            th:text="${course.name}" >
+                <label>
+                    <select th:name="course" class="form-control" onchange="this.form.submit()">
+                        <option th:value="0" th:text="${'Please Select'}"></option>
+                        <option th:each="course : ${courses}"
+                                th:text="${course.name}" >
 
-                    </option>
-                </select>
+                        </option>
+                    </select>
+                </label>
             </div>
         </div>
     </form>
@@ -184,8 +186,8 @@
     let courses = /*[[${courseByRounds}]]*/ {};
 </script>
 
-<script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
-<script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="/js/jquery-3.6.0.js"></script>
+<script type="text/javascript" th:src="/js/bootstrap/bootstrap.min.js"></script>
 
 <script th:src="@{/js/discgolf/userRounds.js}"></script>
 </body>
