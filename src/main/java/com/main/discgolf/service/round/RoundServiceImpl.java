@@ -50,6 +50,16 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
+    public void updateRecordIfRoundIsDeleted(Course course, Round round) {
+        List<Round> rounds = roundRepository.findAllRoundsByCourseId(course.getId());
+        IntSummaryStatistics intSummaryStatistics = rounds.stream()
+                .map(Round::getTotal)
+                .mapToInt(Integer::intValue).summaryStatistics();
+        course.setRecord(intSummaryStatistics.getMin() - course.getPar());
+        courseService.saveCourse(course);
+    }
+
+    @Override
     public List<Round> listOfRoundsByCourseByRound(List<CourseByRound> courseByRounds) {
         List<Round> jsonRounds = new ArrayList<>();
         for (CourseByRound courseByRound : courseByRounds) {
@@ -59,7 +69,7 @@ public class RoundServiceImpl implements RoundService {
     }
 
     @Override
-    public Round addDateAndScoresToRound(String date, List<Integer> scores, Course course) throws ParseException {
+    public Round addDateAndScoresToRound(String date, List<Integer> scores, Course course, boolean playedAlone) throws ParseException {
         Round round = new Round();
         List<Integer> parList = courseService.getCourseListOfHolePars(course);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -70,6 +80,7 @@ public class RoundServiceImpl implements RoundService {
         round.setCourse(course);
         round.setRoundDate(startDate);
         round.setTotal(sum);
+        round.setPlayedAlone(playedAlone);
         List<Score> scoreList = new ArrayList<>();
 
         for (int i=0; i< parList.size(); i++) {

@@ -112,5 +112,12 @@ public class CourseServiceImpl implements CourseService {
         return courseByRounds;
     }
 
+    @Override
+    public void checkIfCourseRecordWasBeaten(Course course, Round round) {
+        if (round.getTotal() < course.getRecord()) {
+            course.setRecord(round.getTotal());
+        }
+    }
+
 
 }

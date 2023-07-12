@@ -32,6 +32,12 @@
 							<input type="date" th:name="roundDate"
 								   class="form-control mb-4 col-4" required>
 						</div>
+						<div class="form-group form-inline">
+							<label>Played alone?</label>
+							<label>
+								<input type="checkbox" name="playedAlone" th:field="*{playedAlone}">
+							</label>
+						</div>
 					<div class="container">
 						<div id="parRow" class="row g-0">
 							<th:block  th:each="par : ${course.holes}">

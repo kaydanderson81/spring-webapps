@@ -9,6 +9,7 @@ import com.main.discgolf.service.course.CourseService;
 import com.main.discgolf.service.round.RoundService;
 import com.main.library.model.User;
 import com.main.library.service.UserService;
+import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,7 +59,6 @@ public class RoundController {
     @GetMapping("/newRound")
     public String showNewRoundForm(@RequestParam("course") String course,
                                    Model model, Principal principal) {
-
         Round round = new Round();
         Course selectedCourse = courseService.getCourseByName(course);
         model.addAttribute("userId", userService.getUserIdByPrincipalName(principal));
@@ -71,15 +71,27 @@ public class RoundController {
     @PostMapping("/saveRoundForCourse/{id}")
     public String saveRound(@PathVariable("id") long id,
                             @RequestParam("roundDate") String date,
+                            @RequestParam(name = "playedAlone", defaultValue = "false") boolean playedAlone,
                             @RequestParam("scoreValues")List<Integer> scores,
                             Principal principal, RedirectAttributes redirectAttributes) throws ParseException {
 
         Course course = courseService.getCourseById(id);
-
-        Round round = roundService.addDateAndScoresToRound(date, scores, course);
+        Round round = roundService.addDateAndScoresToRound(date, scores, course, playedAlone);
 
         User user = userService.getUserById(userService.getUserIdByPrincipalName(principal));
         user.addRound(round);
+
+        int courseRecord = course.getPar() + course.getRecord();
+
+        if (!round.isPlayedAlone()) {
+            if (round.getTotal() < courseRecord) {
+                int difference = courseRecord - round.getTotal();
+                course.setRecord(course.getRecord() - difference);
+                courseService.saveCourse(course);
+                redirectAttributes.addFlashAttribute("success", "Congratulations! A new record at " + course.getName() + "!");
+            }
+        }
+
         roundService.saveRound(round);
         redirectAttributes.addAttribute("updatedCourseId", course.getId());
         return "redirect:/discgolf/rounds/" + user.getId();
@@ -88,9 +100,11 @@ public class RoundController {
     @GetMapping("/deleteRound/{id}")
     public String deleteRoundById(@PathVariable(value = "id") long id, Principal principal, RedirectAttributes redirectAttributes) {
         Long userId = userService.getUserIdByPrincipalName(principal);
-        Long courseId = roundService.getRoundById(id).getCourse().getId();
+        Round round = roundService.getRoundById(id);
+        Course course = round.getCourse();
         this.roundService.deleteRoundById(id);
-        redirectAttributes.addAttribute("updatedCourseId", courseId);
+        this.roundService.updateRecordIfRoundIsDeleted(course, round);
+        redirectAttributes.addAttribute("updatedCourseId", course.getId());
         return "redirect:/discgolf/rounds/" + userId;
     }
 

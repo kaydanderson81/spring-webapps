@@ -2,6 +2,7 @@ package com.main.discgolf.service.course;
 
 import com.main.discgolf.model.Course;
 import com.main.discgolf.model.CourseByRound;
+import com.main.discgolf.model.Round;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface CourseService {
     double getCourseAverageByCourseId(Long id);
 
     List<CourseByRound> getListOfCourseByRoundByUserId(Long userId);
+
+    void checkIfCourseRecordWasBeaten(Course course, Round round);
 }

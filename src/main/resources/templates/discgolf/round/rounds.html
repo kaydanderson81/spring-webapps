@@ -99,8 +99,9 @@
                     </div>
                 </div>
                 <hr>
+                <div id="alert" class="alert alert-success alert-dismissible date show" role="alert" th:text="${success}" th:if="${success}"></div>
                 <th:block th:each="round : ${roundCourse.rounds}">
-                <div id="cardBody" class="card-body">
+                    <div id="cardBody" class="card-body">
                     <div class="row">
                         <div class="col-3">
                             <label>Date: </label>

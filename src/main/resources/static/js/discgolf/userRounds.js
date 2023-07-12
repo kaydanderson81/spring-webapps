@@ -6,6 +6,8 @@ $(' #deleteRoundButton').on('click', function(event) {
 
     });
 
+    setInterval(function(){ $(".alert").fadeOut(); }, 4000);
+
     document.addEventListener('DOMContentLoaded', function() {
       const urlParams = new URLSearchParams(window.location.search);
       const updatedCourseId = urlParams.get('updatedCourseId');

@@ -38,6 +38,9 @@ public class Round {
     @Column(name = "round_total")
     private int total;
 
+    @Column(name = "played_alone", nullable = false)
+    private boolean playedAlone = false;
+
     @Transient
     private List<Integer> barChartArray;
 
@@ -55,12 +58,13 @@ public class Round {
     }
 
     public Round(Long roundId, Course course, List<Score> scores, Date roundDate, int total,
-                 List<Integer> barChartArray, int timesPlayed) {
+                 boolean playedAlone, List<Integer> barChartArray, int timesPlayed) {
         this.roundId = roundId;
         this.course = course;
         this.scores = scores;
         this.roundDate = roundDate;
         this.total = total;
+        this.playedAlone = playedAlone;
         this.barChartArray = barChartArray;
         this.timesPlayed = timesPlayed;
     }
@@ -114,6 +118,14 @@ public class Round {
         this.total = total;
     }
 
+    public boolean isPlayedAlone() {
+        return playedAlone;
+    }
+
+    public void setPlayedAlone(boolean playedAlone) {
+        this.playedAlone = playedAlone;
+    }
+
     public List<Integer> getBarChartArray() {
         return barChartArray;
     }
@@ -138,6 +150,7 @@ public class Round {
                 ", scores=" + scores +
                 ", roundDate=" + roundDate +
                 ", total=" + total +
+                ", playedAlone=" + playedAlone +
                 ", barChartArray=" + barChartArray +
                 ", timesPlayed=" + timesPlayed +
                 '}';

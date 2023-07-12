@@ -15,13 +15,19 @@ public interface RoundService {
 
     void deleteRoundById(Long id);
 
+    void updateRecordIfRoundIsDeleted(Course course, Round round);
+
     List<Round> listOfRoundsByCourseByRound(List<CourseByRound> courseByRounds);
 
     List<Integer> getListOfScoresByRoundId(Long id);
 
-    Round addDateAndScoresToRound(String date, List<Integer> scores, Course course) throws ParseException;
+    Round addDateAndScoresToRound(String date, List<Integer> scores, Course course, boolean playedAlone) throws ParseException;
+
+
 
     int getBestRoundScoreByCourseId(Long userId, Long courseId);
 
     double getAverageScoreByCourse(Long userId, Long courseId);
+
+
 }
