@@ -18,6 +18,12 @@ table {
     text-align: center;
 }
 
+#parRow {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr); /* Set the number of columns per row */
+    grid-gap: 10px; /* Adjust the gap between columns and rows */
+}
+
 #parRow div {
     padding-bottom: 30px;
 }
@@ -148,6 +154,10 @@ table {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
+}
+
+.label-spacing {
+    margin-left: 10px;
 }
 
 /*score color*/

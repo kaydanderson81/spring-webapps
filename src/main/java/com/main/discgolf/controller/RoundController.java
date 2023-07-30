@@ -59,8 +59,9 @@ public class RoundController {
     public String showNewRoundForm(@RequestParam("course") String course,
                                    Model model, Principal principal) {
         Round round = new Round();
+        Long userId = userService.getUserIdByPrincipalName(principal);
         Course selectedCourse = courseService.getCourseByName(course);
-        model.addAttribute("userId", userService.getUserIdByPrincipalName(principal));
+        model.addAttribute("userId", userId);
         model.addAttribute("newRound", round);
         model.addAttribute("course", selectedCourse);
 
@@ -79,6 +80,9 @@ public class RoundController {
 
         User user = userService.getUserById(userService.getUserIdByPrincipalName(principal));
         user.addRound(round);
+
+        System.out.println("Round: " + round);
+        System.out.println("Course: " + course);
 
         int courseRecord = course.getPar() + course.getRecord();
 

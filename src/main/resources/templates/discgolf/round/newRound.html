@@ -24,19 +24,19 @@
 		<div id="alert" class="alert alert-warning alert-dismissible date show" role="alert" th:text="${failed}" th:if="${failed}"></div>
 		<div class="row">
 			<div class="col-sm-12">
-				<a th:href = "@{/discgolf/rounds/userId}">Back</a>
+				<a th:href = "@{/discgolf/rounds/{userId}(userId=${userId})}">Back</a>
 				<form action="#" th:action="@{/discgolf/saveRoundForCourse/{id}(id=${course.id})}" th:object="${newRound}"
 					  method="POST">
 						<div th:text="${course.name}"></div>
 						<div>
 							<label>
 								<input type="date" th:name="roundDate"
-									   class="form-control mb-4 col-4" required>
+									   class="form-control" required>
 							</label>
 						</div>
 						<div class="form-group form-inline">
 							<label>Played alone?</label>
-							<label>
+							<label class="label-spacing">
 								<input type="checkbox" name="playedAlone" th:field="*{playedAlone}">
 							</label>
 						</div>
@@ -72,8 +72,8 @@
 		<a th:href = "@{/discgolf/rounds}">Back to Round List</a>
 		<hr>
 	</div>
-	<script type="text/javascript" th:src="/js/jquery-3.6.0.js"></script>
-	<script type="text/javascript" th:src="/js/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
+	<script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
 	<script th:src="@{/js/discgolf/course.js}"></script>
 </body>
 </html>
